@@ -1,8 +1,7 @@
 import React from "react";
-import FormCreateEdit from "./FormCreateEdit";
-import ShowForm from "./ShowForm";
 
-const BtnCreateNote = ({ onClick }) => {
+type BtnCreateNoteProps = { onClick: () => void };
+const BtnCreateNote = ({ onClick }: BtnCreateNoteProps) => {
   return (
     <div className="createNoteLeft">
       <button onClick={onClick} className="createNote">

@@ -1,6 +1,7 @@
 import React from "react";
 
-const Header = ({ state, archiveState }) => {
+type HeaderProp = { state: (a: boolean) => void; archiveState: boolean };
+const Header = ({ state, archiveState }: HeaderProp) => {
   return (
     <div className="row header">
       <div className="cell"></div>

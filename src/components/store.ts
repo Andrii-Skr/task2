@@ -1,13 +1,28 @@
 import { parseDate } from "./parseDate";
 
+export enum Category {
+  Task = "Task",
+  Idea = "Idea",
+  Random_Thought = "Random Thought",
+}
+
+export type Note = {
+  dates: string[];
+  id: number;
+  name: string;
+  created: string;
+  category: Category;
+  content: string;
+  archive: boolean;
+};
 let count = 0;
 export const getNext = () => count++;
-const list = [
+const list: Note[] = [
   {
     id: getNext(),
     name: "shop list",
     created: new Date().toLocaleDateString(),
-    category: "Task",
+    category: Category.Task,
     content: "bred,shugar",
     dates: "",
     archive: false,
@@ -16,7 +31,7 @@ const list = [
     id: getNext(),
     name: "Books",
     created: new Date().toLocaleDateString(),
-    category: "Task",
+    category: Category.Task,
     content: "buy 'how to learn js for a 5 min'",
     dates: "",
     archive: false,
@@ -25,7 +40,7 @@ const list = [
     id: getNext(),
     name: "New bla bla",
     created: new Date().toLocaleDateString(),
-    category: "Idea",
+    category: Category.Idea,
     content: "some text",
     dates: "",
     archive: true,
@@ -34,7 +49,7 @@ const list = [
     id: getNext(),
     name: "New bla bla",
     created: new Date().toLocaleDateString(),
-    category: "Random Thought",
+    category: Category.Random_Thought,
     content: "some text 23.01.22",
     dates: "",
     archive: false,
@@ -43,7 +58,7 @@ const list = [
     id: getNext(),
     name: "New bla bla",
     created: new Date().toLocaleDateString(),
-    category: "Task",
+    category: Category.Task,
     content: "some text 22",
     dates: "",
     archive: false,
@@ -52,7 +67,7 @@ const list = [
     id: getNext(),
     name: "New bla bla",
     created: new Date().toLocaleDateString(),
-    category: "Task",
+    category: Category.Task,
     content: "some text 123",
     dates: "",
     archive: false,
@@ -61,7 +76,7 @@ const list = [
     id: getNext(),
     name: "New bla bla",
     created: new Date().toLocaleDateString(),
-    category: "Random Thought",
+    category: Category.Random_Thought,
     content: "some text 1.2.22",
     dates: "",
     archive: false,
@@ -70,7 +85,7 @@ const list = [
     id: getNext(),
     name: "New bla bla",
     created: new Date().toLocaleDateString(),
-    category: "Task",
+    category: Category.Task,
     content: "some text 10.01.2020",
     dates: "",
     archive: false,

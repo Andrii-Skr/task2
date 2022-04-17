@@ -1,12 +1,37 @@
 import React, { useState, useEffect } from "react";
-import { getNext } from "./store";
+import { Category, getNext, Note } from "./store";
 import MySelect from "./MySelect";
 import { parseDate } from "./parseDate";
 
-const FormCreateEdit = ({ create, archiveState, editState, currentEdit, saveNote }) => {
-  const [note, setNote] = useState({ name: "", content: "", category: "Task" });
-  const [isFormVisible, showForm] = useState(false);
+type FormCreateEditProp = {
+  create: (note: Note) => void;
+  archiveState: boolean;
+  editState: boolean;
+  currentEdit?: Note;
+  saveNote: (note: Note) => void;
+};
+
+const defaultNote: Note = {
+  id: -1,
+  dates: [],
+  created: "",
+  archive: false,
+  name: "",
+  content: "",
+  category: Category.Task,
+};
+const FormCreateEdit = ({
+  create,
+  archiveState,
+  editState,
+  currentEdit,
+  saveNote,
+}: FormCreateEditProp) => {
+  const [note, setNote] = useState<Note>(defaultNote);
+  const [isFormVisible, showForm] = useState<boolean>(false);
+
   useEffect(() => {
+    if (!currentEdit) return;
     showForm(editState);
     if (editState) {
       setNote(currentEdit);
@@ -19,17 +44,19 @@ const FormCreateEdit = ({ create, archiveState, editState, currentEdit, saveNote
     { value: "Idea", name: "Idea" },
   ];
 
-  const editNote = (e) => {
-    e.preventDefault();
-
+  const editNote: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     showForm(false);
-    const eNote = { ...note, dates: parseDate(note.content) };
+    const eNote: Note = { ...note, dates: parseDate(note.content) };
     saveNote(eNote);
-    setNote({ name: "", content: "", category: "Task" });
+    setNote(defaultNote);
   };
 
-  const addNote = (e) => {
-    e.preventDefault();
+  const cancelEdit: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+    showForm(false);
+    setNote(defaultNote);
+  };
+
+  const addNote: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     if (!isFormVisible) {
       showForm(true);
       return;
@@ -43,14 +70,19 @@ const FormCreateEdit = ({ create, archiveState, editState, currentEdit, saveNote
       created: new Date().toLocaleDateString(),
     };
     create(newNote);
-    setNote({ name: "", content: "", category: "Task" });
+    setNote(defaultNote);
   };
   if (editState) {
     return (
-      <form className="form">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault;
+        }}
+        className="form"
+      >
         {isFormVisible && (
           <>
-            <h3>Edite note</h3>
+            <h3>Edit note</h3>
             <div>
               <label>Note name</label>
               <input
@@ -81,13 +113,19 @@ const FormCreateEdit = ({ create, archiveState, editState, currentEdit, saveNote
                 onChange={(e) => setNote({ ...note, content: e.target.value })}
               />
             </div>
+            <span>
+              <button onClick={cancelEdit} className="createNote">
+                Cancel
+              </button>
+            </span>
           </>
         )}
-        <div>
+
+        <span>
           <button onClick={editNote} className="createNote">
             Save
           </button>
-        </div>
+        </span>
       </form>
     );
   } else {
