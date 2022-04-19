@@ -1,32 +1,23 @@
 import React from "react";
 import Row from "./Row";
 import Header from "./Header";
-import { Note } from "./store";
+import { Note } from "src/store/types";
 
 type RowListProps = {
-  notes: Note[];
+  notes: any;
   archiveState: boolean;
-  remove: (note: Note) => void;
   state: (a: boolean) => void;
-  archiveNote: (note: Note) => void;
-  editNote: (note: Note) => void;
+  setVisible: (visible: boolean) => void;
+  setNote: (note: Note) => void;
 };
-const RowList = ({ notes, archiveState, remove, state, archiveNote, editNote }: RowListProps) => {
+const RowList = ({ notes, archiveState, state, setVisible, setNote }: RowListProps) => {
   return (
     <div className="todolist">
-      <Header state={state} archiveState={archiveState} />
+      <Header archiveState={archiveState} state={state} />
       {notes
         .filter((note: Note) => note.archive === archiveState)
         .map((note: Note) => {
-          return (
-            <Row
-              key={note.id}
-              note={note}
-              remove={remove}
-              archiveNote={archiveNote}
-              editNote={editNote}
-            />
-          );
+          return <Row key={note.id} note={note} setVisible={setVisible} setNote={setNote} />;
         })}
     </div>
   );

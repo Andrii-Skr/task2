@@ -1,5 +1,5 @@
 import React from "react";
-import { Category } from "./store";
+import { Category } from "src/store/types";
 
 type optionsT = {
   value: string;

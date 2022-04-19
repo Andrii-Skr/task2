@@ -1,11 +1,11 @@
 import React from "react";
 import RowStat from "./RowStat";
-import { getStat } from "./GetStat";
 import HeaderStat from "./HeaderStat";
-import { Note } from "./store";
+import { getStat } from "./getStat";
+//import { Note } from "src/store/types";
 
-type RowStatListProp = { notes: Note[] };
-const RowStatList = ({ notes }: RowStatListProp) => {
+//type RowStatListProp = { notes: Note[] };
+const RowStatList = ({ notes }: any) => {
   return (
     <div className="categorylist">
       <HeaderStat />

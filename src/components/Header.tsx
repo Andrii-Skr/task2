@@ -11,7 +11,7 @@ const Header = ({ state, archiveState }: HeaderProp) => {
       <div className="cell">Content</div>
       <div className="cell">Dates</div>
       <div className="cell btnRow">
-        <div></div>
+        <div title="Archive mode"> {archiveState ? "A" : ""}</div>
         <div onClick={() => state(archiveState)} className="myBtn archiveAll">
           <img src="./img/archiveWhite.png" alt="archive" title="Show archive/notes" />
         </div>

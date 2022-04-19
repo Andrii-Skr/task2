@@ -1,42 +1,19 @@
-import React, { useState, useEffect } from "react";
-import { Category, getNext, Note } from "./store";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { getNext } from "src/store/store";
+import { Note } from "src/store/types";
 import MySelect from "./MySelect";
 import { parseDate } from "./parseDate";
 
 type FormCreateEditProp = {
-  create: (note: Note) => void;
   archiveState: boolean;
-  editState: boolean;
-  currentEdit?: Note;
-  saveNote: (note: Note) => void;
+  defaultNote: Note;
 };
 
-const defaultNote: Note = {
-  id: -1,
-  dates: [],
-  created: "",
-  archive: false,
-  name: "",
-  content: "",
-  category: Category.Task,
-};
-const FormCreateEdit = ({
-  create,
-  archiveState,
-  editState,
-  currentEdit,
-  saveNote,
-}: FormCreateEditProp) => {
+const FormCreateEdit = ({ archiveState, defaultNote }: FormCreateEditProp) => {
+  const dispach = useDispatch();
   const [note, setNote] = useState<Note>(defaultNote);
-  const [isFormVisible, showForm] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (!currentEdit) return;
-    showForm(editState);
-    if (editState) {
-      setNote(currentEdit);
-    }
-  }, [editState]);
+  const [isVisible, setVisible] = useState<boolean>(false);
 
   const options = [
     { value: "Task", name: "Task" },
@@ -44,136 +21,93 @@ const FormCreateEdit = ({
     { value: "Idea", name: "Idea" },
   ];
 
-  const editNote: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-    showForm(false);
-    const eNote: Note = { ...note, dates: parseDate(note.content) };
-    saveNote(eNote);
+  const btnCancel = () => {
+    setVisible(false);
     setNote(defaultNote);
   };
 
-  const cancelEdit: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-    showForm(false);
-    setNote(defaultNote);
-  };
-
-  const addNote: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-    if (!isFormVisible) {
-      showForm(true);
+  const btnCreate = () => {
+    if (!isVisible) {
+      setVisible(true);
       return;
     }
-    showForm(false);
-    const newNote = {
-      ...note,
-      id: getNext(),
-      archive: archiveState,
-      dates: parseDate(note.content),
-      created: new Date().toLocaleDateString(),
-    };
-    create(newNote);
+    dispach({
+      type: "createNote",
+      payload: {
+        ...note,
+        id: getNext(),
+        archive: archiveState,
+        dates: parseDate(note.content),
+        created: new Date().toLocaleDateString(),
+      },
+    });
+    setVisible(false);
     setNote(defaultNote);
   };
-  if (editState) {
-    return (
-      <form
-        onSubmit={(e) => {
-          e.preventDefault;
-        }}
-        className="form"
-      >
-        {isFormVisible && (
-          <>
-            <h3>Edit note</h3>
-            <div>
-              <label>Note name</label>
-              <input
-                type="text"
-                className="cell name"
-                value={note.name}
-                onChange={(e) => setNote({ ...note, name: e.target.value })}
-                placeholder="Enter note name"
-              />
-            </div>
 
-            <div>
-              <label>Category</label>
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+      }}
+      className="form"
+    >
+      {isVisible && (
+        <>
+          <h3>Create note</h3>
+          <div>
+            <label>Note name</label>
+            <input
+              type="text"
+              className="cell name"
+              value={note.name}
+              onChange={(e) => setNote({ ...note, name: e.target.value })}
+              placeholder="Enter note name"
+            />
+          </div>
 
-              <MySelect
-                onChange={(value) => setNote({ ...note, category: value })}
-                value={note.category}
-                options={options}
-              />
-            </div>
-            <div>
-              <label>Content</label>
-              <input
-                type="text"
-                className="cell content"
-                placeholder="Enter content"
-                value={note.content}
-                onChange={(e) => setNote({ ...note, content: e.target.value })}
-              />
-            </div>
-            <span>
-              <button onClick={cancelEdit} className="createNote">
-                Cancel
-              </button>
-            </span>
-          </>
-        )}
+          <div>
+            <label>Category</label>
 
-        <span>
-          <button onClick={editNote} className="createNote">
-            Save
-          </button>
-        </span>
-      </form>
-    );
-  } else {
-    return (
-      <form className="form">
-        {isFormVisible && (
-          <>
-            <h3>Create note</h3>
-            <div>
-              <label>Note name</label>
-              <input
-                type="text"
-                className="cell name"
-                value={note.name}
-                onChange={(e) => setNote({ ...note, name: e.target.value })}
-                placeholder="Enter note name"
-              />
-            </div>
-
-            <div>
-              <label>Category</label>
-
-              <MySelect
-                onChange={(value) => setNote({ ...note, category: value })}
-                value={note.category}
-                options={options}
-              />
-            </div>
-            <div>
-              <label>Content</label>
-              <input
-                type="text"
-                className="cell content"
-                placeholder="Enter content"
-                value={note.content}
-                onChange={(e) => setNote({ ...note, content: e.target.value })}
-              />
-            </div>
-          </>
+            <MySelect
+              onChange={(value) => setNote({ ...note, category: value })}
+              value={note.category}
+              options={options}
+            />
+          </div>
+          <div>
+            <label>Content</label>
+            <input
+              type="text"
+              className="cell content"
+              placeholder="Enter content"
+              value={note.content}
+              onChange={(e) => setNote({ ...note, content: e.target.value })}
+            />
+          </div>
+        </>
+      )}
+      <div className="formBtns">
+        {isVisible && (
+          <div>
+            <button onClick={() => btnCancel()} className="createNote">
+              Cancel
+            </button>
+          </div>
         )}
         <div>
-          <button onClick={addNote} className="createNote">
+          <button
+            onClick={() => {
+              btnCreate();
+            }}
+            className="createNote"
+          >
             Create
           </button>
         </div>
-      </form>
-    );
-  }
+      </div>
+    </form>
+  );
 };
 
 export { FormCreateEdit };

@@ -1,12 +1,4 @@
-import { Note } from "./store";
-
-type CategoryStat = { [key: string]: { archive: number; active: number; id: number } };
-export type Stat = {
-  archive: number;
-  active: number;
-  id: number;
-  category: string;
-};
+import { CategoryStat, Note, Stat } from "src/store/types";
 
 const getStat = (list: Note[]): Stat[] => {
   const statList: CategoryStat = list.reduce<CategoryStat>((acc, el) => {
