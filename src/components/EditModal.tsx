@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Note } from "src/store/types";
 import MySelect from "./MySelect";
@@ -8,16 +8,20 @@ type EditModalProp = {
   isVisible: boolean;
   note: Note;
   setVisible: (visible: boolean) => void;
-  setNote: (note: Note) => void;
 };
 
-export const EditModal = ({ isVisible, setVisible, note, setNote }: EditModalProp) => {
+const options = [
+  { value: "Task", name: "Task" },
+  { value: "Random Thought", name: "Random Thought" },
+  { value: "Idea", name: "Idea" },
+];
+
+export const EditModal = ({ isVisible, setVisible, note }: EditModalProp) => {
   const dispach = useDispatch();
-  const options = [
-    { value: "Task", name: "Task" },
-    { value: "Random Thought", name: "Random Thought" },
-    { value: "Idea", name: "Idea" },
-  ];
+  const [editedNote, setEditedNote] = useState(note);
+  useEffect(() => {
+    setEditedNote(note);
+  }, [note]);
   return (
     <div
       className={isVisible ? "editModal visible" : "editModal"}
@@ -36,8 +40,8 @@ export const EditModal = ({ isVisible, setVisible, note, setNote }: EditModalPro
             <input
               type="text"
               className="cell name"
-              value={note.name}
-              onChange={(e) => setNote({ ...note, name: e.target.value })}
+              value={editedNote.name}
+              onInput={(e) => setEditedNote({ ...editedNote, name: e.currentTarget.value })}
               placeholder="Enter note name"
             />
           </div>
@@ -46,8 +50,8 @@ export const EditModal = ({ isVisible, setVisible, note, setNote }: EditModalPro
             <label>Category</label>
 
             <MySelect
-              onChange={(value) => setNote({ ...note, category: value })}
-              value={note.category}
+              onChange={(value) => setEditedNote({ ...editedNote, category: value })}
+              value={editedNote.category}
               options={options}
             />
           </div>
@@ -57,8 +61,8 @@ export const EditModal = ({ isVisible, setVisible, note, setNote }: EditModalPro
               type="text"
               className="cell content"
               placeholder="Enter content"
-              value={note.content}
-              onChange={(e) => setNote({ ...note, content: e.target.value })}
+              value={editedNote.content}
+              onInput={(e) => setEditedNote({ ...editedNote, content: e.currentTarget.value })}
             />
           </div>
           <div className="formBtns">
@@ -68,8 +72,8 @@ export const EditModal = ({ isVisible, setVisible, note, setNote }: EditModalPro
                   dispach({
                     type: "editNote",
                     payload: {
-                      ...note,
-                      dates: parseDate(note.content),
+                      ...editedNote,
+                      dates: parseDate(editedNote.content),
                       created: new Date().toLocaleDateString(),
                     },
                   });

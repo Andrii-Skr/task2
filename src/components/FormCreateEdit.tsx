@@ -10,16 +10,16 @@ type FormCreateEditProp = {
   defaultNote: Note;
 };
 
+const options = [
+  { value: "Task", name: "Task" },
+  { value: "Random Thought", name: "Random Thought" },
+  { value: "Idea", name: "Idea" },
+];
+
 const FormCreateEdit = ({ archiveState, defaultNote }: FormCreateEditProp) => {
   const dispach = useDispatch();
   const [note, setNote] = useState<Note>(defaultNote);
   const [isVisible, setVisible] = useState<boolean>(false);
-
-  const options = [
-    { value: "Task", name: "Task" },
-    { value: "Random Thought", name: "Random Thought" },
-    { value: "Idea", name: "Idea" },
-  ];
 
   const btnCancel = () => {
     setVisible(false);

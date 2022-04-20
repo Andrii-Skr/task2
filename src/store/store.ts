@@ -95,26 +95,22 @@ export const selectNotes = (state: RootState) => state.notes;
 const reducer: Reducer<RootState> = (state = defaultState, action: any) => {
   switch (action.type) {
     case "createNote":
-      return { notes: [...state.notes, createNote(state.notes, action)] };
+      return { ...state, notes: [...state.notes, createNote(state.notes, action)] };
     case "removeNote":
-      return { notes: [...remoteNote(state.notes, action)] };
+      return { ...state, notes: [...removeNote(state.notes, action)] };
 
     case "editNote":
-      return { notes: editNote(state.notes, action) };
+      return { ...state, notes: [...editNote(state.notes, action)] };
 
     case "archiveNote":
-      return { notes: [...archiveNote(state.notes, action)] };
+      return { ...state, notes: [...archiveNote(state.notes, action)] };
 
     default:
       return state;
   }
 };
-// const remoteNote = (list: Note[], id: number) => {
-// const remoteNote = (list: Note[], note: Note) => {
-const remoteNote = (state: Note[], { payload }: { payload: Note }) => {
-  console.log("payload", payload);
+const removeNote = (state: Note[], { payload }: { payload: Note }) => {
   state = state.filter((n) => n.id !== payload.id);
-  console.log("state", state);
   return state;
 };
 
@@ -131,15 +127,8 @@ const archiveNote = (state: Note[], { payload }: { payload: Note }) => {
 const editNote = (state: Note[], { payload }: { payload: Note }) => {
   const index = state.findIndex((n) => n.id === payload.id);
   state[index] = { ...payload };
+
   return state;
 };
 
-//export const store = createStore(reducer, undefined);
-
-export const store = createStore(
-  reducer,
-  /* preloadedState, */ devToolsEnhancer()
-  // Specify name here, actionsDenylist, actionsCreators and other options if needed
-);
-
-console.log(store);
+export const store = createStore(reducer, /* preloadedState, */ devToolsEnhancer());

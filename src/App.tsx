@@ -8,17 +8,17 @@ import { Category, Note } from "./store/types";
 import { EditModal } from "./components/EditModal";
 import { selectNotes } from "./store/store";
 
-function App() {
-  const defaultNote: Note = {
-    id: -1,
-    dates: [],
-    created: "",
-    archive: false,
-    name: "",
-    content: "",
-    category: Category.Task,
-  };
+const defaultNote: Note = {
+  id: -1,
+  dates: [],
+  created: "",
+  archive: false,
+  name: "",
+  content: "",
+  category: Category.Task,
+};
 
+function App() {
   const notes = useSelector(selectNotes);
   const [archiveState, setState] = useState<boolean>(false);
   const [note, setNote] = useState<Note>(defaultNote);
@@ -38,7 +38,7 @@ function App() {
         setNote={setNote}
       />
       <FormCreateEdit archiveState={archiveState} defaultNote={defaultNote} />
-      <EditModal isVisible={isVisible} setVisible={setVisible} note={note} setNote={setNote} />
+      <EditModal isVisible={isVisible} setVisible={setVisible} note={note} />
       <RowStatList notes={notes} />
     </div>
   );
