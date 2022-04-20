@@ -1,7 +1,8 @@
 import React from "react";
 import Row from "./Row";
-import Header from "./Header";
 import { Note } from "src/store/types";
+import Header from "./Header";
+import "./RowList.css";
 
 type RowListProps = {
   notes: any;

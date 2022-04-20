@@ -1,0 +1,38 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin: 10px;
+}
+.form input,
+.form select,
+.form label {
+  width: 150px;
+  height: 40px;
+  display: inline-block;
+}
+
+.formBtns {
+  display: flex;
+  flex-direction: row;
+}
+.editModal {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: scale(0);
+}
+.editModal.visible {
+  transform: scale(1);
+}
+.editModalContent {
+  padding: 20px;
+  border-radius: 15px;
+  background-color: #616161;
+}

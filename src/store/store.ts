@@ -1,5 +1,5 @@
 import { createStore, Reducer } from "@reduxjs/toolkit";
-import { parseDate } from "../components/parseDate";
+import { parseDate } from "../utils/parseDate";
 import { Category, Note } from "./types";
 import { devToolsEnhancer } from "@redux-devtools/extension";
 

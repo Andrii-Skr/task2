@@ -1,0 +1,17 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: sans-serif;
+}
+.createNoteRight {
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+}
+.createNote {
+  padding: 5px;
+  margin-right: 10px;
+}

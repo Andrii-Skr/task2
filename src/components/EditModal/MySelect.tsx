@@ -24,9 +24,3 @@ const MySelect = ({ options, value, onChange }: MySelectProp) => {
 };
 
 export default MySelect;
-
-//
-
-/* <option value="Task">Task</option>
-          <option value="Random Thought">Random Thought</option>
-          <option value="Idea">Idea</option> */
